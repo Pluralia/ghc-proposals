@@ -1,5 +1,5 @@
-Options Local Pragma
-====================
+Local Warning Pragmas
+=====================
 
 .. proposal-number:: 
 .. ticket-url::
@@ -83,23 +83,53 @@ Local control of warnings
       getLine
       return ()
       
+3. You get warning ``-Wmissing-signatures`` for ``x`` but not for ``y``.
+   ::
+    {-# OPTIONS_GHC -Wmissing-signatures #-}
+
+    x2 :: Int -> Int
+    x2 = (* 2)
+
+    x3 :: Int -> Int
+    x3 = (* 3)
+
+    x4 :: Int -> Int
+    x4 = (* 4)
+
+    x = 12
+    
+    {-# OPTIONS_LOCAL -Wno-missing-signatures #-}    
+    x' = 13
 
 Using language extensions locally
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `Comment from the ticket 602 <https://gitlab.haskell.org/ghc/ghc/issues/602#note_108677>`_: "It might be reasonable to consider adding arbitrary option-changes locally. (For example, I'd love to be able to turn on LANGUAGE pragmas only for part of a file"
 
-1. Let's enable ``-XPartialTypeSignatures`` in ``x``. Such code doesn't compile because partial type signature wasn't allow in ``y``.
+1. Let's enable ``-XPartialTypeSignatures`` in ``f``. Such code doesn't compile because partial type signature wasn't allow in ``g``.
    ::
-    x = {-# OPTIONS_LOCAL -XPartialTypeSignatures #-}
+    f = {-# OPTIONS_LOCAL -XPartialTypeSignatures #-}
       let a :: _
           a = ()
        in ()
        
-    y =
+    g =
       let a :: _
           a = ()
        in ()
+       
+2. Function ``g`` fails because ``-XRecordWildCards`` was enabled only for ``f``.
+   ::
+    data Info = Info {x :: Bool, y :: Char, z :: Char, w :: String}
+
+    {-# OPTIONS_GHC -XRecordWildCards #-}
+    f :: Info -> String
+    f (Info {x = False, ..}) = y : z : ' ' : w
+    f (Info {x = True, ..})  = w ++ [' ', y, z]
+
+    g :: Info -> String
+    g (Info {x = False, ..})         = y : z : ' ' : w
+    g (Info {x = True, y = '+', ..}) = w ++ [' ', z]
 
 Proposed Change Specification
 -----------------------------
@@ -124,7 +154,9 @@ Every compiler flag can require individual way to collaborate with ``OPTIONS_LOC
 
 2) **Influence to learnability of the language**
 
-``OPTIONS_LOCAL`` pragma is optional pragma and is non-essential for basic users of the language. The area of using intersects with ``OPTIONS_GHC`` pragma and as a result it does not require any more learning after the ``OPTIONS_GHC`` pragma. There is only one distinction - you need to learn where and how to place it inside the file (somewhat like the ``SCC`` pragma).
+*Learnability of the pragma*: ``OPTIONS_LOCAL`` is optional pragma and is non-essential for basic users of the language. The area of using intersects with ``OPTIONS_GHC`` pragma and as a result it does not require any more learning after the ``OPTIONS_GHC`` pragma. There is only one distinction - you need to learn where and how to place it inside the file (somewhat like the ``SCC`` pragma).
+
+*Learnability of the language*: ``OPTIONS_LOCAL`` used close to the declaration. That means a basic user will search faster the name of the language extension  to which the new syntax corresponds.
 
 3) **Remaining drawbacks**
 
@@ -139,7 +171,9 @@ None.
 Unresolved Questions
 --------------------
 
-There is `a question on Stackoverflow <https://stackoverflow.com/questions/12717909/stop-ghc-from-warning-me-about-one-particular-missing-pattern/>`_. It says to rid of the warning in case of incomplete patterns in a code you can use only ``error``. Whether is fine to add such feature using pragma ``OPTIONS_LOCAL``?
+1) There is an idea to refuse the implementation of ``OPTIONS_LOCAL`` for language extensions. It can be too expensive (personal work for every extension). Instead of it ``OPTIONS_LOCAL`` for extensions can be splitted on some pragmas with the same local action. Here "the list of sense" for every extension https://gist.github.com/Pluralia/d1d0466ced9d211a9ebc2b944139de78.
+
+2) There is `a question on Stackoverflow <https://stackoverflow.com/questions/12717909/stop-ghc-from-warning-me-about-one-particular-missing-pattern/>`_. It says to rid of the warning in case of incomplete patterns in a code you can use only ``error``. Whether is fine to add such feature using pragma ``OPTIONS_LOCAL``? It will be new flag.
 
 
 Implementation Plan

@@ -1,5 +1,5 @@
-Local Warning Pragmas
-=====================
+Options Local Pragma
+====================
 
 .. proposal-number:: 
 .. ticket-url::
@@ -9,17 +9,17 @@ Local Warning Pragmas
 .. sectnum::
 .. contents::
 
-We propose to add functionality for switching GHC-options locally. For instance, in this code
+We propose to add functionality for control warnings locally, in particular, add pragmas ``WARN``, ``IGNORE`` and ``ERROR``. For instance, in this code
 ::
  {-# OPTIONS_GHC -Wno-name-shadowing #-}
 
  f a =
-   {-# OPTIONS_LOCAL -Wname-shadowing #-}
+   {-# WARN name-shadowing #-}
    \a -> a + a
 
  g a = \a -> a + a
 
-there is ``-Wname-shadowing`` warning in funcion ``f`` but not in function ``g``
+there is ``-Wname-shadowing`` warning in funcion ``f`` but not in function ``g``.
 
 This proposal rises some ticket problems:
  1. https://gitlab.haskell.org/ghc/ghc/issues/602
@@ -28,12 +28,11 @@ This proposal rises some ticket problems:
 Motivation
 ------------
 
-Warnings and errors by compiler help to write nice code. Using ``OPTIONS_LOCAL`` pragma you can more flexible configure compiler options.
+Warnings and errors by compiler help to write nice code. Using ``WARN``, ``IGNORE`` and ``ERROR`` pragmas you can more flexible configure warnings which are indicate bugs.
 
-Local control of warnings
-~~~~~~~~~~~~~~~~~~~~~~~~~
- 
-1. Consider `suppress orphan instance warning per instance <https://gitlab.haskell.org/ghc/ghc/issues/10150>`_. We disable ``-Worphans`` warning for ``instance ApplyFunc Box`` but warning for `instance ApplyFunc Bottle` works.
+Consider some examples.
+
+1. `Suppress orphan instance warning per instance <https://gitlab.haskell.org/ghc/ghc/issues/10150>`_. We disable ``-Worphans`` warning for ``instance ApplyFunc Box`` but warning for ``instance ApplyFunc Bottle`` works.
    ::
     module Foo (
       ApplyFunc(..)
@@ -41,7 +40,7 @@ Local control of warnings
 
     class ApplyFunc f where
       func :: (a -> b) -> f a -> f b
-
+    
    
     module Bar (
       Box(..)
@@ -55,13 +54,13 @@ Local control of warnings
                   | Milk a 
 
    
-    {-# OPTIONS -Worphans #-}
+    {-# OPTIONS_GHC -Worphans #-}
     module Baz where
 
     import Foo
     import Bar
 
-    instance {-# OPTIONS_LOCAL -fno-warn-orphans #-} ApplyFunc Box where
+    instance {-# IGNORE orphans #-} ApplyFunc Box where
       func f Empty       = Empty
       func f (Content a) = Content $ f a
 
@@ -69,12 +68,12 @@ Local control of warnings
       func f Water    = Water
       func f (Milk a) = Milk $ f a
 
-2. Consider `suppress particular kinds of warnings for parts of a source file <https://gitlab.haskell.org/ghc/ghc/issues/602>`_. In this example we don't get ``-Wunused-do-bind`` warning for ``f`` but get it for ``g``.
+2. `Suppress particular kinds of warnings for parts of a source file <https://gitlab.haskell.org/ghc/ghc/issues/602>`_. In this example we don't get ``-Wunused-do-bind`` warning for ``f`` but get it for ``g``.
    ::
     {-# OPTIONS_GHC -Wunused-do-bind #-}
 
     f :: IO ()
-    f = {-# OPTIONS_LOCAL -Wno-unused-do-bind #-} do
+    f = {-# IGNORE unused-do-bind #-} do
       getLine
       return ()
 
@@ -83,7 +82,15 @@ Local control of warnings
       getLine
       return ()
       
-3. You get warning ``-Wmissing-signatures`` for ``x`` but not for ``y``.
+3. `Suppress the warning in case of incomplete patterns <https://stackoverflow.com/questions/12717909/stop-ghc-from-warning-me-about-one-particular-missing-pattern/>`_. Pragma ``IGNORE`` fixes it:
+   ::
+    {-# OPTIONS_GHC -Wincomplete-patterns #-}
+
+    {-# INGNORE incomplete-patterns #-}
+    f :: (Show a) => Maybe a -> String
+    f (Just a) = show a
+      
+4. In this example you get warning ``-Wmissing-signatures`` for ``x`` but not for ``y``.
    ::
     {-# OPTIONS_GHC -Wmissing-signatures #-}
 
@@ -98,65 +105,39 @@ Local control of warnings
 
     x = 12
     
-    {-# OPTIONS_LOCAL -Wno-missing-signatures #-}    
+    {-# IGNORE missing-signatures #-}    
     x' = 13
-
-Using language extensions locally
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-`Comment from the ticket 602 <https://gitlab.haskell.org/ghc/ghc/issues/602#note_108677>`_: "It might be reasonable to consider adding arbitrary option-changes locally. (For example, I'd love to be able to turn on LANGUAGE pragmas only for part of a file"
-
-1. Let's enable ``-XPartialTypeSignatures`` in ``f``. Such code doesn't compile because partial type signature wasn't allow in ``g``.
-   ::
-    f = {-# OPTIONS_LOCAL -XPartialTypeSignatures #-}
-      let a :: _
-          a = ()
-       in ()
-       
-    g =
-      let a :: _
-          a = ()
-       in ()
-       
-2. Function ``g`` fails because ``-XRecordWildCards`` was enabled only for ``f``.
-   ::
-    data Info = Info {x :: Bool, y :: Char, z :: Char, w :: String}
-
-    {-# OPTIONS_GHC -XRecordWildCards #-}
-    f :: Info -> String
-    f (Info {x = False, ..}) = y : z : ' ' : w
-    f (Info {x = True, ..})  = w ++ [' ', y, z]
-
-    g :: Info -> String
-    g (Info {x = False, ..})         = y : z : ' ' : w
-    g (Info {x = True, y = '+', ..}) = w ++ [' ', z]
 
 Proposed Change Specification
 -----------------------------
 
-GHC already support the ``OPTIONS_GHC`` pragma for configuring options for the file as a whole. We propose to create a similar pragma ``OPTIONS_LOCAL`` which will do the same things but locally. You can see what it looks like in the *Motivation section*.
+GHC already support the ``OPTIONS_GHC`` pragma for configuring options for the file as a whole (in particular, configure warnings). **We propose to create new pragmas**:
 
-Places for ``OPTIONS_LOCAL`` pragma:
+1. ``WARN`` - enables warning locally
+2. ``IGNORE`` - disables warning locally
+3. ``ERROR`` - makes a specific warning into a fatal error localy
+
+This pragmas use idea of (``-W``, ``-Wno-``, ``-Werror-``) batch switching of flags.
+
+**Places for pragmas**:
  - expression
  - declaration
  - types
 
-The pragma uses `meaning-preserving parsing rules <https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0046-scc-parsing.rst>`_ for expressions and types. As for declarations - it applies to the following declaration.
+This pragmas use `meaning-preserving parsing rules <https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0046-scc-parsing.rst>`_ for expressions and types. As for declarations - they apply to the following declaration.
 
-If ``OPTIONS_LOCAL`` doesn't make sense compiler gives a warning.
+Local work makes sense not for every warning. In case of misuse compiler gives some error.
 
 Costs and Drawbacks
 -------------------
 
 1) **Estimate on development and maintenance costs**
 
-Every compiler flag can require individual way to collaborate with ``OPTIONS_LOCAL`` pragma.
+Every warning can require individual way to collaborate with local using.
 
 2) **Influence to learnability of the language**
 
-*Learnability of the pragma*: ``OPTIONS_LOCAL`` is optional pragma and is non-essential for basic users of the language. The area of using intersects with ``OPTIONS_GHC`` pragma and as a result it does not require any more learning after the ``OPTIONS_GHC`` pragma. There is only one distinction - you need to learn where and how to place it inside the file (somewhat like the ``SCC`` pragma).
-
-*Learnability of the language*: ``OPTIONS_LOCAL`` used close to the declaration. That means a basic user will search faster the name of the language extension  to which the new syntax corresponds.
+This pragmas are optional pragmas and is non-essential for basic users of the language. The area of using intersects with ``OPTIONS_GHC`` pragma and as a result it does not require any more learning after the ``OPTIONS_GHC`` pragma. There is only one distinction - you need to learn where and how to place it inside the file (somewhat like the ``SCC`` pragma).
 
 3) **Remaining drawbacks**
 
@@ -166,15 +147,30 @@ None.
 Alternatives
 ------------
 
-None.
+We proposed to create one pragma ``OPTIONS_LOCAL`` which works like ``OPTIONS_GHC`` and provides a local control warnings and language extensions. This idea was reject becase:
+
+ - every local language extension require individual way to implementation and can sense which is different from the global sence
+ - using one name ``OPTIONS_LOCAL`` for warning is not so comfortable
 
 Unresolved Questions
 --------------------
 
-1) There is an idea to refuse the implementation of ``OPTIONS_LOCAL`` for language extensions. It can be too expensive (personal work for every extension). Instead of it ``OPTIONS_LOCAL`` for extensions can be splitted on some pragmas with the same local action. Here "the list of sense" for every extension https://gist.github.com/Pluralia/d1d0466ced9d211a9ebc2b944139de78.
+New flags
+~~~~~~~~~
 
-2) There is `a question on Stackoverflow <https://stackoverflow.com/questions/12717909/stop-ghc-from-warning-me-about-one-particular-missing-pattern/>`_. It says to rid of the warning in case of incomplete patterns in a code you can use only ``error``. Whether is fine to add such feature using pragma ``OPTIONS_LOCAL``? It will be new flag.
+Local switching of warnings makes harder keeping track of using one specific warning. To "profile" local warnings avoid mistakes we propose to create following GHC warnings:
 
+1. ``-Wlocal-warn`` - enable warning for every using of proposed pragmas
+2. ``-Wunused-local-warn`` - enable warning for unused proposed pragmas
+
+Local language extensions
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There are three ways to local work with language extensions:
+
+1. create some general pragma ``LANG``
+2. create individual local pragmas for every extension when it makes sense
+3. forget this idea
 
 Implementation Plan
 -------------------

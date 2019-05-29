@@ -37,7 +37,8 @@ Motivation
 
 Warnings and errors by compiler help to write nice code. Using ``WARN``, ``IGNORE`` and ``ERROR`` pragmas you can more flexible configure warnings which are indicate bugs.
 
-Consider some examples. All examples have been created or updated pursuant remarks by @scott-fleischman.
+Code examples
+~~~~~~~~~~~~~
 
 1. `Suppress orphan instance warning per instance <https://gitlab.haskell.org/ghc/ghc/issues/10150>`_. We disable ``-Worphans`` warning for ``instance ApplyFunc Box`` but warning for ``instance ApplyFunc Bottle`` works.
    ::
@@ -116,6 +117,16 @@ We need to define an orphan instance for some type in an external library (``Bar
     
     {-# IGNORE missing-signatures #-}    
     y = 13
+
+Another motivation
+~~~~~~~~~~~~~~~~~~
+
+5. Dealing with other people's code. With a large codebase that uses lots of libraries and limited developer resources we need to respond to changes in libraries as we update to more recent versions. We may not agree with decisions of various libraries, but we do have to respond to them, and we may not be able to make the fully correct response immediately.
+6. Allowing local exceptions to warnings allow us to turn on warnings globally but allow local exceptions that we can document where they came from and why we are not able or willing to change them in the short term. This could be because it's not technically possible or because we are not willing to invest the time and effort to make the changes now. (We can file a ticket to improve it later.)
+
+7. We can quarantine deprecations more easily. We turn on the warning for use of deprecated code, but often libraries make choices that make it hard to immediately remove the deprecated code. One case I ran into recently was a library deprecated a record field that is still even used internally by the library. The library disabled the deprecation warning in the entire module in their own code, and we are forced to also disable deprecations in our modules that use the field, or to quarantine our use of that field to a separate smaller module that only has code using the deprecated field. It would have been nicer to indicate which deprecated field that we are intentionally using to avoid allowing any other deprecated code to be used in the module.
+
+8. A local declaration also provides documentation about which warnings we are disabling and why. In particular if the syntax for local pragmas is unique enough, it makes common search/replace an easy way to gauge how large a task it would be to update all of it at a future time.
 
 Proposed Change Specification
 -----------------------------

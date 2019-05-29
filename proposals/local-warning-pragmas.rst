@@ -151,10 +151,16 @@ Here some warnings which proposed to add in **blacklist**:
  - all "batch enabling" flags (``-W``, ``-Wall``, ...)
  - all ``-f*``
  - all ``-Wdefer*``
- - all deprecated warnings: ``-Wamp``
- - all ``-Wnoncanonical*``, ``-Wmissing-monadfail-instances``, ``-Wsemigroup``
+ - all deprecated warnings: ``-Wamp``, ``-Wmissing-*-sigs``, ``-Wstar-is-type``
+ - all ``-Wnoncanonical*``, ``-Wmissing-monadfail-instances``, ``-Wsemigroup``, ``-Wmissing-methods``
  - all ``-Wdodgy*``
  - ``-Wunrecognised-warning-flags``,  ``-Wunrecognised-pragmas``
+ - ``-Wduplicate-exports``, ``-Wmissing-export-lists``
+ - ``-Whi-shadowing``
+ - ``-Wimplicit-prelude``
+ - ``-Wmissing-import-lists``
+ - ``-Wtabs``
+ - ````
 
 **whitelist**
  - ``-Wtyped-holes``
@@ -162,7 +168,22 @@ Here some warnings which proposed to add in **blacklist**:
  - ``-Wmissed-specialisations``, ``-Wall-missed-specialisations``
  - ``-Wwarnings-deprecations``, ``-Wdeprecations``, ``-Wdeprecated-flags``
  - ``-Wunsupported-calling-conventions``
-
+ - ``-Woverflowed-literals``
+ - ``-Wempty-enumerations``
+ - ``-Wduplicate-constraints``, ``-Wredundant-constraints``, ``-Wsimplifiable-class-constraints``
+ - ``-Widentities``
+ - ``-Wimplicit-kind-vars``
+ - ``-Wincomplete-patterns``, ``-Wincomplete-uni-patterns``
+ - ``-Wincomplete-record-updates``
+ - ``-Wmissing-fields``
+ - ``-Wmissing-signatures``, ``-Wmissing-exported-signatures``, ``-Wmissing-local-signatures``, ``-Wmissing-pattern-synonym-signatures``
+ - ``-Wname-shadowing``, ``-Woverlapping-patterns``
+ - ``-Worphans``
+ - ``-Winaccessible-code``
+ - ``-Wstar-binder``
+ - ````
+ - ````
+ 
 Costs and Drawbacks
 -------------------
 

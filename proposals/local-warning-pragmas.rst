@@ -94,27 +94,27 @@ We disable ``-Worphans`` warning for ``instance ApplyFunc Box`` but warning for 
    func f Water    = Water
    func f (Milk a) = Milk $ f a
 
-3. **Local suppress warnings ``-Wmissing-signature`` and ``-Wunused-top-binds``**.
+3. **Local suppress warnings ``-Wmissing-signature``**.
 
-Suppose you want to use temporary value or function for debug and you don't want define signature for it (). At the same time you want 
+Suppose you want to use temporary value or function for debug and you don't want define signature for it. At the same time you want to track 
 
 In this example you get warning ``-Wmissing-signatures`` for ``x`` but not for ``y``.
-   ::
-    {-# OPTIONS_GHC -Wmissing-signatures #-}
+::
+ {-# OPTIONS_GHC -Wmissing-signatures #-}
 
-    x2 :: Int -> Int
-    x2 = (* 2)
+ x2 :: Int -> Int
+ x2 = (* 2)
 
-    x3 :: Int -> Int
-    x3 = (* 3)
+ x3 :: Int -> Int
+ x3 = (* 3)
 
-    x4 :: Int -> Int
-    x4 = (* 4)
+ x4 :: Int -> Int
+ x4 = (* 4)
 
-    x = 12
+ x = 12
 
-    {-# IGNORE missing-signatures #-}    
-    y = 13
+ {-# IGNORE missing-signatures #-}    
+ y = 13
 
 Another motivation
 ~~~~~~~~~~~~~~~~~~

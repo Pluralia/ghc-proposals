@@ -20,7 +20,7 @@ We propose to add functionality for control warnings locally, in particular, add
    let x = "further changed version of data"
    print x
     
-Here in each case, you are effectively throwing away the previous version of the data without some warning but if you remove ``IGNORE`` you get ``-Wname-shadowing``. You can rewrite some lines to rid of it:
+Here in each case, you are effectively throwing away the previous version of the data without any warning but if you remove ``IGNORE`` you get ``-Wname-shadowing``. You can rewrite some lines to rid of it:
 ::
  let x1 = "some data"
  let x2 = "updated version of that data"
@@ -37,7 +37,7 @@ Motivation
 
 All examples have been created or updated pursuant to `the remarks by @scott-fleischman <https://github.com/ghc-proposals/ghc-proposals/pull/234#issuecomment-496661390>`_. 
 
-Warnings and errors by compiler help to write nice code. Using ``WARN``, ``IGNORE`` and ``ERROR`` pragmas you can more flexible configure warnings which are indicate bugs.
+Warnings and errors by compiler help to write nice code. Using ``WARN``, ``IGNORE`` and ``ERROR`` pragmas you can configure warnings which are indicate bugs with more flexibility.
 
 Code examples
 ~~~~~~~~~~~~~
@@ -96,7 +96,7 @@ We disable ``-Worphans`` warning for ``instance ApplyFunc Box`` but warning for 
 
 3. **Local suppress warnings -Wmissing-signature**.
 
-Suppose you want to use temporary value or function for debug and you don't want define signature for it. At the same time you want to track missing signature in rest part.
+Suppose you want to use temporary value or function for debug and you don't want define any signature for it. At the same time you want to track missing signature in the remaining part.
 
 In this example you get warning ``-Wmissing-signatures`` for ``x`` but not for ``y``.
 ::

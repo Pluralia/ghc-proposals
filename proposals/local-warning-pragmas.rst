@@ -10,6 +10,7 @@ Local Warning Pragmas
 .. contents::
 
 We propose to add functionality for control warnings locally, in particular, add pragmas ``WARN``, ``IGNORE`` and ``ERROR``. Consider this code:
+
   ::
    {-# OPTIONS_GHC -Wname-shadowing #-}
 
@@ -21,6 +22,7 @@ We propose to add functionality for control warnings locally, in particular, add
      print x
     
 Here in each case, you are effectively throwing away the previous version of the data. Soppose you rewrite some lines:
+
   ::
    let x1 = "some data"
    let x2 = "updated version of that data"

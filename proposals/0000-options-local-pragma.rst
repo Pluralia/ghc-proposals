@@ -136,8 +136,7 @@ GHC already support the ``OPTIONS_GHC`` pragma for configuring options for the f
 2. ``IGNORE`` - disables a warning locally
 3. ``ERROR`` - makes a specific warning into a fatal error localy
 
-This pragmas use an idea of (``-W``, ``-Wno-``, ``-Werror-``) batch switching of flags `proposed @nomeata <
-https://github.com/ghc-proposals/ghc-proposals/pull/234#issuecomment-495977461>`_.
+This pragmas use an idea of (``-W``, ``-Wno-``, ``-Werror-``) batch switching of flags `proposed @nomeata <https://github.com/ghc-proposals/ghc-proposals/pull/234#issuecomment-495977461>`_.
 
 **Places for pragmas**:
  - expression

@@ -35,12 +35,24 @@ This proposal rises some ticket problems:
 Motivation
 ------------
 
+All examples have been created or updated pursuant remarks by @scott-fleischman.
+
 Warnings and errors by compiler help to write nice code. Using ``WARN``, ``IGNORE`` and ``ERROR`` pragmas you can more flexible configure warnings which are indicate bugs.
 
 Code examples
 ~~~~~~~~~~~~~
+      
+1. `Suppress the warning in case of incomplete patterns <https://stackoverflow.com/questions/12717909/stop-ghc-from-warning-me-about-one-particular-missing-pattern/>`_. Pragma ``IGNORE`` fixes it:
+   ::
+    {-# OPTIONS_GHC -Wincomplete-patterns #-}
 
-1. In this example you get warning ``-Wmissing-signatures`` for ``x`` but not for ``y``.
+    {-# INGNORE incomplete-patterns #-}
+    f :: (Show a) => Maybe a -> String
+    f (Just a) = show a
+    
+We might choose one place where we reluctantly decide that we don't want to match all patterns (due to other people's code, or maybe your own poor choice in the past but not able/willing to fix right now), but we certainly want to check for complete patterns everywhere else in the module. For example, there are deprecated cases in a sum type, where we didn't want to pattern match on them due to being deprecated, which also would generate a deprecated warning.
+
+2. In this example you get warning ``-Wmissing-signatures`` for ``x`` but not for ``y``.
    ::
     {-# OPTIONS_GHC -Wmissing-signatures #-}
 
@@ -54,33 +66,11 @@ Code examples
     x4 = (* 4)
 
     x = 12
-    
+
     {-# IGNORE missing-signatures #-}    
     y = 13
-
-2. `Suppress particular kinds of warnings for parts of a source file <https://gitlab.haskell.org/ghc/ghc/issues/602>`_. In this example we don't get ``-Wunused-do-bind`` warning for ``f`` but get it for ``g``.
-   ::
-    {-# OPTIONS_GHC -Wunused-do-bind #-}
-
-    f :: IO ()
-    f = {-# IGNORE unused-do-bind #-} do
-      getLine
-      return ()
-
-    g :: IO ()
-    g = do
-      getLine
-      return ()
-      
-3. `Suppress the warning in case of incomplete patterns <https://stackoverflow.com/questions/12717909/stop-ghc-from-warning-me-about-one-particular-missing-pattern/>`_. Pragma ``IGNORE`` fixes it:
-   ::
-    {-# OPTIONS_GHC -Wincomplete-patterns #-}
-
-    {-# INGNORE incomplete-patterns #-}
-    f :: (Show a) => Maybe a -> String
-    f (Just a) = show a
-      
-4. `Suppress orphan instance warning per instance <https://gitlab.haskell.org/ghc/ghc/issues/10150>`_. We disable ``-Worphans`` warning for ``instance ApplyFunc Box`` but warning for ``instance ApplyFunc Bottle`` works.
+ 
+3. `Suppress orphan instance warning per instance <https://gitlab.haskell.org/ghc/ghc/issues/10150>`_. We disable ``-Worphans`` warning for ``instance ApplyFunc Box`` but warning for ``instance ApplyFunc Bottle`` works.
    ::
     module Foo (
       ApplyFunc(..)
@@ -121,15 +111,13 @@ We need to define an orphan instance for some type in an external library (``Bar
 Another motivation
 ~~~~~~~~~~~~~~~~~~
 
-This block of motivation have been proposed by @scott-fleischman. Also examples ``-Wname-shadowing`` and ``-Worphans`` were updated pursuant his remarks.
+4. **Other people's code**. With a large codebase that uses lots of libraries and limited developer resources we need to respond to changes in libraries as we update to more recent versions. We may not agree with decisions of various libraries, but we do have to respond to them, and we may not be able to make the fully correct response immediately.
 
-5. **Other people's code**. With a large codebase that uses lots of libraries and limited developer resources we need to respond to changes in libraries as we update to more recent versions. We may not agree with decisions of various libraries, but we do have to respond to them, and we may not be able to make the fully correct response immediately.
+5. **Allowing local exceptions to warnings**. It allows us to turn on warnings globally but allow local exceptions that we can document where they came from and why we are not able or willing to change them in the short term. This could be because it's not technically possible or because we are not willing to invest the time and effort to make the changes now. (We can file a ticket to improve it later.)
 
-6. **Allowing local exceptions to warnings**. It allows us to turn on warnings globally but allow local exceptions that we can document where they came from and why we are not able or willing to change them in the short term. This could be because it's not technically possible or because we are not willing to invest the time and effort to make the changes now. (We can file a ticket to improve it later.)
+6. **More easily quarantine deprecations**. We turn on the warning for use of deprecated code, but often libraries make choices that make it hard to immediately remove the deprecated code. Suppose a library deprecated a record field that is still even used internally by the library. The library disabled the deprecation warning in the entire module in their own code, and we are forced to also disable deprecations in our modules that use the field, or to quarantine our use of that field to a separate smaller module that only has code using the deprecated field. It would have been nicer to indicate which deprecated field that we are intentionally using to avoid allowing any other deprecated code to be used in the module.
 
-7. **More easily quarantine deprecations**. We turn on the warning for use of deprecated code, but often libraries make choices that make it hard to immediately remove the deprecated code. Suppose a library deprecated a record field that is still even used internally by the library. The library disabled the deprecation warning in the entire module in their own code, and we are forced to also disable deprecations in our modules that use the field, or to quarantine our use of that field to a separate smaller module that only has code using the deprecated field. It would have been nicer to indicate which deprecated field that we are intentionally using to avoid allowing any other deprecated code to be used in the module.
-
-8. **Documentation**. A local declaration provides documentation about which warnings we are disabling and why. In particular if the syntax for local pragmas is unique enough, it makes common search/replace an easy way to gauge how large a task it would be to update all of it at a future time. For example, a redundant constraint can be useful to express the intention of the code for purposes of clarity even when not strictly necessary.
+7. **Documentation**. A local declaration provides documentation about which warnings we are disabling and why. In particular if the syntax for local pragmas is unique enough, it makes common search/replace an easy way to gauge how large a task it would be to update all of it at a future time. For example, a redundant constraint can be useful to express the intention of the code for purposes of clarity even when not strictly necessary.
 
 Proposed Change Specification
 -----------------------------

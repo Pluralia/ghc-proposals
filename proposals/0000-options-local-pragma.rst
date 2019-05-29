@@ -35,7 +35,7 @@ This proposal rises some ticket problems:
 Motivation
 ------------
 
-All examples have been created or updated pursuant `to the remarks by @scott-fleischman <https://github.com/ghc-proposals/ghc-proposals/pull/234#issuecomment-495977461>`_. 
+All examples have been created or updated pursuant to `the remarks by @scott-fleischman <https://github.com/ghc-proposals/ghc-proposals/pull/234#issuecomment-496661390>`_. 
 
 Warnings and errors by compiler help to write nice code. Using ``WARN``, ``IGNORE`` and ``ERROR`` pragmas you can more flexible configure warnings which are indicate bugs.
 
@@ -136,7 +136,8 @@ GHC already support the ``OPTIONS_GHC`` pragma for configuring options for the f
 2. ``IGNORE`` - disables a warning locally
 3. ``ERROR`` - makes a specific warning into a fatal error localy
 
-This pragmas use idea of (``-W``, ``-Wno-``, ``-Werror-``) batch switching of flags proposed @nomeata.
+This pragmas use an idea of (``-W``, ``-Wno-``, ``-Werror-``) batch switching of flags `proposed @nomeata <
+https://github.com/ghc-proposals/ghc-proposals/pull/234#issuecomment-495977461>`_.
 
 **Places for pragmas**:
  - expression

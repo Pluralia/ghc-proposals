@@ -37,7 +37,7 @@ Motivation
 
 Warnings and errors by compiler help to write nice code. Using ``WARN``, ``IGNORE`` and ``ERROR`` pragmas you can more flexible configure warnings which are indicate bugs.
 
-Consider some examples. Examples have been proposed or updated with comments by @scott-fleischman.
+Consider some examples. All examples have been created or updated pursuant remarks by @scott-fleischman.
 
 1. `Suppress orphan instance warning per instance <https://gitlab.haskell.org/ghc/ghc/issues/10150>`_. We disable ``-Worphans`` warning for ``instance ApplyFunc Box`` but warning for ``instance ApplyFunc Bottle`` works.
    ::

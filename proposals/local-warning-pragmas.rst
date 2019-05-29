@@ -148,11 +148,22 @@ These pragmas use `meaning-preserving parsing rules <https://github.com/ghc-prop
 Local work makes sense not for every warning. In case of misuse compiler gives some error.
 
 Here some warnings which proposed to add in **blacklist**:
- - ``-W``, ``-Wall``, ``-Weverything``, ``-Wcompat``, ``-w``, ``-Werror``, ``-Wwarn``
+ - all "batch enabling" flags (``-W``, ``-Wall``, ...)
  - all ``-f*``
- - ``-Wunrecognised-warning-flags``
- - ``-Wdeferred-type-errors``
+ - all ``-Wdefer*``
+ - all deprecated warnings: ``-Wamp``
+ - all ``-Wnoncanonical*``, ``-Wmissing-monadfail-instances``, ``-Wsemigroup``
+ - all ``-Wdodgy*``
+ - ``-Wunrecognised-warning-flags``,  ``-Wunrecognised-pragmas``
+ - ````
 
+**whitelist**
+ - ``-Wtyped-holes``
+ - ``-Wpartial-type-signatures``
+ - ``-Wmissed-specialisations``, ``-Wall-missed-specialisations``
+ - ``-Wwarnings-deprecations``, ``-Wdeprecations``, ``-Wdeprecated-flags``
+ - ``-Wunsupported-calling-conventions``
+ - ````
 Costs and Drawbacks
 -------------------
 

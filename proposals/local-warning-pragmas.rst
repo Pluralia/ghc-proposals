@@ -177,14 +177,6 @@ We proposed to create one pragma ``OPTIONS_LOCAL`` which works like ``OPTIONS_GH
 Unresolved Questions
 --------------------
 
-New flags
-~~~~~~~~~
-
-Local switching of warnings makes harder keeping track of using one specific warning. To "profile" local warnings avoid mistakes we propose to create following GHC warnings:
-
-1. ``-Wlocal-warn`` - enable warning for every using of proposed pragmas
-2. ``-Wunused-local-warn`` - enable warning for unused proposed pragmas
-
 Local language extensions
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -195,8 +187,16 @@ There are three ways to local work with language extensions:
 3. Create individual local pragmas for every extension when it makes sense
 4. Forget this idea
 
+New flags
+~~~~~~~~~
+
+Local switching of warnings makes harder keeping track of using one specific warning. To "profile" local warnings avoid mistakes we propose to create following GHC warnings:
+
+1. ``-Wlocal-warn`` - enable warning for every using of proposed pragmas
+2. ``-Wunused-local-warn`` - enable warning for unused proposed pragmas
+
 Implementation Plan
 -------------------
 
 There is `the proof of concept implementation <https://gitlab.haskell.org/ghc/ghc/merge_requests/1029>`_.
-It demonstrates all idea of local work but doesn't link with proposed pragmas because works with one general - ``OPTIONS_LOCAL``.
+It demonstrates all idea of local warnings but doesn't link with proposed pragmas because works with one general - ``OPTIONS_LOCAL``.

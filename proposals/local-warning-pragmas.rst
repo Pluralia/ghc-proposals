@@ -155,7 +155,6 @@ Here some warnings which proposed to add in **blacklist**:
  - all ``-Wnoncanonical*``, ``-Wmissing-monadfail-instances``, ``-Wsemigroup``
  - all ``-Wdodgy*``
  - ``-Wunrecognised-warning-flags``,  ``-Wunrecognised-pragmas``
- - ````
 
 **whitelist**
  - ``-Wtyped-holes``
@@ -163,7 +162,7 @@ Here some warnings which proposed to add in **blacklist**:
  - ``-Wmissed-specialisations``, ``-Wall-missed-specialisations``
  - ``-Wwarnings-deprecations``, ``-Wdeprecations``, ``-Wdeprecated-flags``
  - ``-Wunsupported-calling-conventions``
- - ````
+
 Costs and Drawbacks
 -------------------
 

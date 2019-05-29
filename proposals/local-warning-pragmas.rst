@@ -147,11 +147,13 @@ These pragmas use `meaning-preserving parsing rules <https://github.com/ghc-prop
 
 Local work makes sense not for every warning. In case of misuse compiler gives some error.
 
-Here some warnings which proposed to add in **blacklist**:
+Here some warnings which proposed to add in ...
+
+**blacklist**
  - all "batch enabling" flags like ``-W``, ``-Wall``, etc.
  - all ``-f*``
  - all ``-Wdefer*``
- - all deprecated warnings: ``-Wamp``, ``-Wmissing-*-sigs``, ``-Wstar-is-type``
+ - all deprecated warnings: ``-Wamp``, ``-Wduplicate-constraints``, ``-Wmissing-*-sigs``, ``-Wstar-is-type``
  - all ``-Wnoncanonical*``, ``-Wmissing-monadfail-instances``, ``-Wsemigroup``, ``-Wmissing-methods``
  - all ``-Wdodgy*``
  - ``-Wunrecognised-warning-flags``,  ``-Wunrecognised-pragmas``
@@ -171,14 +173,14 @@ Here some warnings which proposed to add in **blacklist**:
  - ``-Wunsupported-calling-conventions``
  - ``-Woverflowed-literals``
  - ``-Wempty-enumerations``
- - ``-Wduplicate-constraints``, ``-Wredundant-constraints``, ``-Wsimplifiable-class-constraints``
+ - ``-Wsimplifiable-class-constraints``
  - ``-Widentities``
  - ``-Wimplicit-kind-vars``
  - ``-Wincomplete-patterns``, ``-Wincomplete-uni-patterns``
  - ``-Wincomplete-record-updates``
  - ``-Wmissing-fields``
  - ``-Wmissing-signatures``, ``-Wmissing-exported-signatures``, ``-Wmissing-local-signatures``, ``-Wmissing-pattern-synonym-signatures``
- - ``-Wname-shadowing``, ``-Woverlapping-patterns``, ``-Winline-rule-shadowing``
+ - ``-Woverlapping-patterns``, ``-Winline-rule-shadowing``
  - ``-Worphans``
  - ``-Winaccessible-code``
  - ``-Wstar-binder``
@@ -186,10 +188,16 @@ Here some warnings which proposed to add in **blacklist**:
  - ``-Wmonomorphism-restriction``
  - ``-Wunticked-promoted-constructors``
  - ``-Wunused-binds``, ``-Wunused-top-binds``, ``-Wunused-local-binds``, ``-Wunused-pattern-binds``
- - ``-Wunused-matches``, ``-Wunused-type-patterns``, ``-Wwrong-do-bind``
  - ``-Wunused-do-bind``
  - ``-Wunused-foralls``
  - ``-Wunbanged-strict-patterns``
+ 
+**there is syntax for local suppression** (but we can add it in whitelist):
+ - ``-Wredundant-constraints``
+ - ``-Wname-shadowing``
+ - ``-Wunused-matches``
+ - ``-Wwrong-do-bind``
+ - ``-Wunused-type-patterns``
  - ``-Wpartial-fields``
  
 Costs and Drawbacks

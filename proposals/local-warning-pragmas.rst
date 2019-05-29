@@ -155,7 +155,7 @@ Costs and Drawbacks
 
 1) **Estimate on development and maintenance costs**
 
-Every warning can require individual way to collaborate with local using.
+Some warnings can require individual way to collaborate with local using.
 
 2) **Influence to learnability of the language**
 
@@ -169,9 +169,9 @@ None.
 Alternatives
 ------------
 
-We proposed to create one pragma ``OPTIONS_LOCAL`` which works like ``OPTIONS_GHC`` and provides a local control warnings and language extensions. This idea was reject because:
+We proposed to create one pragma ``OPTIONS_LOCAL`` which works like ``OPTIONS_GHC`` and provides a local control warnings and language extensions. This idea was rejected because:
 
-- every local language extension require individual way to implementation and can sense which is different from the global sence
+- every local language extension require individual way to implementation and can sense which is different from the global sense
 - using one name ``OPTIONS_LOCAL`` for warning is not so comfortable
 
 Unresolved Questions

@@ -168,7 +168,7 @@ Local language extensions
 
 There are three ways to local work with language extensions:
 
-1. Tweak the LANGUAGE pragma to be acceptable in other places, not only at the top.
+1. Tweak the ``LANGUAGE`` pragma to be acceptable in other places, not only at the top.
 2. Create a new pragma ``LANGUAGE_LOCAL``
 3. Create individual local pragmas for every extension when it makes sense
 4. Forget this idea
@@ -177,3 +177,4 @@ Implementation Plan
 -------------------
 
 There is `the proof of concept implementation <https://gitlab.haskell.org/ghc/ghc/merge_requests/1029>`_.
+It demonstrates all idea of local work but doesn't link with proposed pragmas because works with one general - ``OPTIONS_LOCAL``.

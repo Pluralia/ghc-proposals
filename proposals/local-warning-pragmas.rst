@@ -37,7 +37,7 @@ Motivation
 
 Warnings and errors by compiler help to write nice code. Using ``WARN``, ``IGNORE`` and ``ERROR`` pragmas you can more flexible configure warnings which are indicate bugs.
 
-Consider some examples.
+Consider some examples. Examples have been proposed or updated with comments by @scott-fleischman.
 
 1. `Suppress orphan instance warning per instance <https://gitlab.haskell.org/ghc/ghc/issues/10150>`_. We disable ``-Worphans`` warning for ``instance ApplyFunc Box`` but warning for ``instance ApplyFunc Bottle`` works.
    ::
@@ -74,6 +74,8 @@ Consider some examples.
     instance ApplyFunc Bottle where
       func f Water    = Water
       func f (Milk a) = Milk $ f a
+
+We need to define an orphan instance for some type in an external library (``Bar``). It serves a nice documentation-like purpose to keep those instances local to avoid allowing any orphan in an entire module. Later we can search for the local instance declarations and revisit the decision to use them.
 
 2. `Suppress particular kinds of warnings for parts of a source file <https://gitlab.haskell.org/ghc/ghc/issues/602>`_. In this example we don't get ``-Wunused-do-bind`` warning for ``f`` but get it for ``g``.
    ::

@@ -47,13 +47,13 @@ Code examples
 We might choose one place where we reluctantly decide that we don't want to match all patterns (due to other people's code, or maybe your own poor choice in the past but not able/willing to fix right now), but we certainly want to check for complete patterns everywhere else in the module. For example, there are deprecated cases in a sum type, where we didn't want to pattern match on them due to being deprecated, which also would generate a deprecated warning.
 
 Pragma ``IGNORE`` fixes it:
-   ::
-    {-# OPTIONS_GHC -Wincomplete-patterns #-}
+::
+ {-# OPTIONS_GHC -Wincomplete-patterns #-}
 
-    {-# INGNORE incomplete-patterns #-}
-    f :: (Show a) => Maybe a -> String
-    f (Just a) = show a
-    
+ {-# INGNORE incomplete-patterns #-}
+ f :: (Show a) => Maybe a -> String
+ f (Just a) = show a
+
 2. `Suppress orphan instance warning per instance <https://gitlab.haskell.org/ghc/ghc/issues/10150>`_. 
 
 We need to define an orphan instance for some type in an external library (``Bar``). It serves a nice documentation-like purpose to keep those instances local to avoid allowing any orphan in an entire module. Later we can search for the local instance declarations and revisit the decision to use them.

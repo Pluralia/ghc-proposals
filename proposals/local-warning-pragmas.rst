@@ -94,7 +94,7 @@ We disable ``-Worphans`` warning for ``instance ApplyFunc Box`` but warning for 
    func f Water    = Water
    func f (Milk a) = Milk $ f a
 
-3. **Local suppress warnings ``-Wmissing-signature``**.
+3. **Local suppress warnings -Wmissing-signature**.
 
 Suppose you want to use temporary value or function for debug and you don't want define signature for it. At the same time you want to track missing signature in rest part.
 

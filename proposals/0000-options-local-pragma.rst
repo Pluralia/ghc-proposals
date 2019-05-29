@@ -147,7 +147,7 @@ These pragmas use `meaning-preserving parsing rules <https://github.com/ghc-prop
 
 Local work makes sense not for every warning. In case of misuse compiler gives some error.
 
-Here some warnings which proposed to add in ...
+Here some warnings which are proposed to be added in ...
 
 **blacklist**
  - all "batch enabling" flags like ``-W``, ``-Wall``, etc.
@@ -209,7 +209,7 @@ Some warnings can require individual way to collaborate with local using.
 
 2) **Influence to learnability of the language**
 
-This pragmas are optional pragmas and is non-essential for basic users of the language. The area of using intersects with ``OPTIONS_GHC`` pragma and as a result it does not require any more learning after the ``OPTIONS_GHC`` pragma. There is only one distinction - you need to learn where and how to place it inside the file (somewhat like the ``SCC`` pragma).
+These pragmas are optional pragmas and are non-essential for basic users of the language. The area of using intersects with ``OPTIONS_GHC`` pragma and as a result it does not require any more learning after the ``OPTIONS_GHC`` pragma. There is only one distinction - you need to learn where and how to place it inside the file (somewhat like the ``SCC`` pragma).
 
 3) **Remaining drawbacks**
 
@@ -220,13 +220,13 @@ Alternatives
 
 We proposed to create one pragma ``OPTIONS_LOCAL`` which works like ``OPTIONS_GHC`` and provides a local control warnings and language extensions. This idea was rejected because:
 
-- every local language extension require individual way to implementation and can sense which is different from the global sense
-- using one name ``OPTIONS_LOCAL`` for warning is not so comfortable
+- every local language extension requires individual way of implementation and can sense what is different from the global sense
+- using one name ``OPTIONS_LOCAL`` for warning is not so convenient
 
 Unresolved Questions
 --------------------
 
-Should be useful to add Local language extensions? There are three ways to local work with language extensions:
+Would it be useful to add local language extensions? There are three ways to local work with language extensions:
 
 1. Tweak the ``LANGUAGE`` pragma to be acceptable in other places, not only at the top.
 2. Create a new pragma ``LANGUAGE_LOCAL``
@@ -237,4 +237,4 @@ Implementation Plan
 -------------------
 
 There is `the proof of concept implementation <https://gitlab.haskell.org/ghc/ghc/merge_requests/1029>`_.
-It demonstrates all idea of local warnings but doesn't link with proposed pragmas because works with one general - ``OPTIONS_LOCAL``.
+It doesn't use the proposed pragmas but demonstrates the basic idea of working with local warnings using a single pragma ``OPTIONS_LOCAL``.

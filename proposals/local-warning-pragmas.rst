@@ -148,7 +148,10 @@ These pragmas use `meaning-preserving parsing rules <https://github.com/ghc-prop
 Local work makes sense not for every warning. In case of misuse compiler gives some error.
 
 Here some warnings which proposed to add in **blacklist**:
- - `-Wtabs`
+ - ``-W``, ``-Wall``, ``-Weverything``, ``-Wcompat``, ``-w``, ``-Werror``, ``-Wwarn``
+ - all ``-f*``
+ - ``-Wunrecognised-warning-flags``
+ - ``-Wdeferred-type-errors``
 
 Costs and Drawbacks
 -------------------
@@ -164,7 +167,6 @@ This pragmas are optional pragmas and is non-essential for basic users of the la
 3) **Remaining drawbacks**
 
 None.
-
 
 Alternatives
 ------------

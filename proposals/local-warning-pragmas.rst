@@ -132,8 +132,8 @@ Proposed Change Specification
 
 GHC already support the ``OPTIONS_GHC`` pragma for configuring options for the file as a whole (in particular, configure warnings). **We propose to create new pragmas**:
 
-1. ``WARN`` - enables warning locally
-2. ``IGNORE`` - disables warning locally
+1. ``WARN`` - enables a warning locally
+2. ``IGNORE`` - disables a warning locally
 3. ``ERROR`` - makes a specific warning into a fatal error localy
 
 This pragmas use idea of (``-W``, ``-Wno-``, ``-Werror-``) batch switching of flags.
@@ -143,9 +143,12 @@ This pragmas use idea of (``-W``, ``-Wno-``, ``-Werror-``) batch switching of fl
  - declaration
  - types
 
-This pragmas use `meaning-preserving parsing rules <https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0046-scc-parsing.rst>`_ for expressions and types. As for declarations - they apply to the following declaration.
+These pragmas use `meaning-preserving parsing rules <https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0046-scc-parsing.rst>`_ for expressions and types. As for declarations - they apply to the following declaration.
 
 Local work makes sense not for every warning. In case of misuse compiler gives some error.
+
+Here some warnings which proposed to add in **blacklist**:
+ - `-Wtabs`
 
 Costs and Drawbacks
 -------------------

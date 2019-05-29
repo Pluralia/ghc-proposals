@@ -96,7 +96,7 @@ We disable ``-Worphans`` warning for ``instance ApplyFunc Box`` but warning for 
 
 3. **Local suppress warnings ``-Wmissing-signature``**.
 
-Suppose you want to use temporary value or function for debug and you don't want define signature for it. At the same time you want to track 
+Suppose you want to use temporary value or function for debug and you don't want define signature for it. At the same time you want to track missing signature in rest part.
 
 In this example you get warning ``-Wmissing-signatures`` for ``x`` but not for ``y``.
 ::

@@ -20,7 +20,7 @@ We propose to add functionality for control warnings locally, in particular, add
    let x = "further changed version of data"
    print x
     
-Here in each case, you are effectively throwing away the previous version of the data. Soppose you rewrite some lines:
+Here in each case, you are effectively throwing away the previous version of the data without some warning but if you remove ``IGNORE`` you get ``-Wname-shadowing``. You can rewrite some lines to rid of it:
 ::
  let x1 = "some data"
  let x2 = "updated version of that data"

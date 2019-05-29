@@ -35,7 +35,7 @@ This proposal rises some ticket problems:
 Motivation
 ------------
 
-All examples have been created or updated pursuant remarks by @scott-fleischman.
+All examples have been created or updated pursuant `to the remarks by @scott-fleischman <https://github.com/ghc-proposals/ghc-proposals/pull/234#issuecomment-495977461>`_. 
 
 Warnings and errors by compiler help to write nice code. Using ``WARN``, ``IGNORE`` and ``ERROR`` pragmas you can more flexible configure warnings which are indicate bugs.
 

@@ -10,23 +10,21 @@ Local Warning Pragmas
 .. contents::
 
 We propose to add functionality for control warnings locally, in particular, add pragmas ``WARN``, ``IGNORE`` and ``ERROR``. Consider this code:
+::
+ {-# OPTIONS_GHC -Wname-shadowing #-}
 
-  ::
-   {-# OPTIONS_GHC -Wname-shadowing #-}
-
-   main :: IO ()
-   main = {-# IGNORE name-shadowing #-} do 
-     let x = "some data"
-     let x = "updated version of that data"
-     let x = "further changed version of data"
-     print x
+ main :: IO ()
+ main = {-# IGNORE name-shadowing #-} do 
+   let x = "some data"
+   let x = "updated version of that data"
+   let x = "further changed version of data"
+   print x
     
 Here in each case, you are effectively throwing away the previous version of the data. Soppose you rewrite some lines:
-
-  ::
-   let x1 = "some data"
-   let x2 = "updated version of that data"
-   let x3 = "further changed version of data"
+::
+ let x1 = "some data"
+ let x2 = "updated version of that data"
+ let x3 = "further changed version of data"
 
 then you have all of ``x1``, ``x2``, and ``x3`` in scope and you may make an error by picking an older numbered x, when conceptually you really only want one x in scope.
 

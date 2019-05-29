@@ -59,40 +59,40 @@ Pragma ``IGNORE`` fixes it:
 We need to define an orphan instance for some type in an external library (``Bar``). It serves a nice documentation-like purpose to keep those instances local to avoid allowing any orphan in an entire module. Later we can search for the local instance declarations and revisit the decision to use them.
 
 We disable ``-Worphans`` warning for ``instance ApplyFunc Box`` but warning for ``instance ApplyFunc Bottle`` works.
-   ::
-    module Foo (
-      ApplyFunc(..)
-    ) where
+::
+ module Foo (
+   ApplyFunc(..)
+ ) where
 
-    class ApplyFunc f where
-      func :: (a -> b) -> f a -> f b
-    
-   
-    module Bar (
-      Box(..)
-    , Bottle(..)
-    ) where
+ class ApplyFunc f where
+   func :: (a -> b) -> f a -> f b
 
-    data Box a = Empty
-               | Content a 
 
-    data Bottle a = Water
-                  | Milk a 
+ module Bar (
+   Box(..)
+ , Bottle(..)
+ ) where
 
-   
-    {-# OPTIONS_GHC -Worphans #-}
-    module Baz where
+ data Box a = Empty
+            | Content a 
 
-    import Foo
-    import Bar
+ data Bottle a = Water
+               | Milk a 
 
-    instance {-# IGNORE orphans #-} ApplyFunc Box where
-      func f Empty       = Empty
-      func f (Content a) = Content $ f a
 
-    instance ApplyFunc Bottle where
-      func f Water    = Water
-      func f (Milk a) = Milk $ f a
+ {-# OPTIONS_GHC -Worphans #-}
+ module Baz where
+
+ import Foo
+ import Bar
+
+ instance {-# IGNORE orphans #-} ApplyFunc Box where
+   func f Empty       = Empty
+   func f (Content a) = Content $ f a
+
+ instance ApplyFunc Bottle where
+   func f Water    = Water
+   func f (Milk a) = Milk $ f a
 
 3. **Local suppress warnings ``-Wmissing-signature`` and ``-Wunused-top-binds``**.
 

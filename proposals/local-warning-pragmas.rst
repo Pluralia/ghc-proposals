@@ -129,7 +129,7 @@ This block of motivation have been proposed by @scott-fleischman. Also examples 
 
 7. **More easily quarantine deprecations**. We turn on the warning for use of deprecated code, but often libraries make choices that make it hard to immediately remove the deprecated code. Suppose a library deprecated a record field that is still even used internally by the library. The library disabled the deprecation warning in the entire module in their own code, and we are forced to also disable deprecations in our modules that use the field, or to quarantine our use of that field to a separate smaller module that only has code using the deprecated field. It would have been nicer to indicate which deprecated field that we are intentionally using to avoid allowing any other deprecated code to be used in the module.
 
-8. **Documentation**. A local declaration provides documentation about which warnings we are disabling and why. In particular if the syntax for local pragmas is unique enough, it makes common search/replace an easy way to gauge how large a task it would be to update all of it at a future time.
+8. **Documentation**. A local declaration provides documentation about which warnings we are disabling and why. In particular if the syntax for local pragmas is unique enough, it makes common search/replace an easy way to gauge how large a task it would be to update all of it at a future time. For example, a redundant constraint can be useful to express the intention of the code for purposes of clarity even when not strictly necessary.
 
 Proposed Change Specification
 -----------------------------

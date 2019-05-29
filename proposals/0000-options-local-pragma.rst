@@ -226,10 +226,7 @@ We proposed to create one pragma ``OPTIONS_LOCAL`` which works like ``OPTIONS_GH
 Unresolved Questions
 --------------------
 
-Local language extensions
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-There are three ways to local work with language extensions:
+Should be useful to add Local language extensions? There are three ways to local work with language extensions:
 
 1. Tweak the ``LANGUAGE`` pragma to be acceptable in other places, not only at the top.
 2. Create a new pragma ``LANGUAGE_LOCAL``

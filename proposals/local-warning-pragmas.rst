@@ -148,7 +148,7 @@ These pragmas use `meaning-preserving parsing rules <https://github.com/ghc-prop
 Local work makes sense not for every warning. In case of misuse compiler gives some error.
 
 Here some warnings which proposed to add in **blacklist**:
- - all "batch enabling" flags (``-W``, ``-Wall``, ...)
+ - all "batch enabling" flags like ``-W``, ``-Wall``, etc.
  - all ``-f*``
  - all ``-Wdefer*``
  - all deprecated warnings: ``-Wamp``, ``-Wmissing-*-sigs``, ``-Wstar-is-type``
@@ -156,11 +156,12 @@ Here some warnings which proposed to add in **blacklist**:
  - all ``-Wdodgy*``
  - ``-Wunrecognised-warning-flags``,  ``-Wunrecognised-pragmas``
  - ``-Wduplicate-exports``, ``-Wmissing-export-lists``
- - ``-Whi-shadowing``
+ - ``-Whi-shadowing``, ``-Wmissing-home-modules``
  - ``-Wimplicit-prelude``
- - ``-Wmissing-import-lists``
+ - ``-Wmissing-import-lists``, ``-Wunused-imports``
  - ``-Wtabs``
- - ````
+ - ``-Wunsupported-llvm-version``
+ - ``-Wcpp-undef``
 
 **whitelist**
  - ``-Wtyped-holes``
@@ -177,12 +178,19 @@ Here some warnings which proposed to add in **blacklist**:
  - ``-Wincomplete-record-updates``
  - ``-Wmissing-fields``
  - ``-Wmissing-signatures``, ``-Wmissing-exported-signatures``, ``-Wmissing-local-signatures``, ``-Wmissing-pattern-synonym-signatures``
- - ``-Wname-shadowing``, ``-Woverlapping-patterns``
+ - ``-Wname-shadowing``, ``-Woverlapping-patterns``, ``-Winline-rule-shadowing``
  - ``-Worphans``
  - ``-Winaccessible-code``
  - ``-Wstar-binder``
- - ````
- - ````
+ - ``-Wtype-defaults``
+ - ``-Wmonomorphism-restriction``
+ - ``-Wunticked-promoted-constructors``
+ - ``-Wunused-binds``, ``-Wunused-top-binds``, ``-Wunused-local-binds``, ``-Wunused-pattern-binds``
+ - ``-Wunused-matches``, ``-Wunused-type-patterns``, ``-Wwrong-do-bind``
+ - ``-Wunused-do-bind``
+ - ``-Wunused-foralls``
+ - ``-Wunbanged-strict-patterns``
+ - ``-Wpartial-fields``
  
 Costs and Drawbacks
 -------------------

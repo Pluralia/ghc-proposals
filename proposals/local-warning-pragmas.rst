@@ -192,7 +192,7 @@ Here some warnings which proposed to add in ...
  - ``-Wunused-foralls``
  - ``-Wunbanged-strict-patterns``
  
-**there is syntax for local suppression** (but we can add it in whitelist):
+**there is some syntax for local suppression** (but we can add it in whitelist):
  - ``-Wredundant-constraints``
  - ``-Wname-shadowing``
  - ``-Wunused-matches``

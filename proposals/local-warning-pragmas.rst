@@ -40,7 +40,47 @@ Warnings and errors by compiler help to write nice code. Using ``WARN``, ``IGNOR
 Code examples
 ~~~~~~~~~~~~~
 
-1. `Suppress orphan instance warning per instance <https://gitlab.haskell.org/ghc/ghc/issues/10150>`_. We disable ``-Worphans`` warning for ``instance ApplyFunc Box`` but warning for ``instance ApplyFunc Bottle`` works.
+1. In this example you get warning ``-Wmissing-signatures`` for ``x`` but not for ``y``.
+   ::
+    {-# OPTIONS_GHC -Wmissing-signatures #-}
+
+    x2 :: Int -> Int
+    x2 = (* 2)
+
+    x3 :: Int -> Int
+    x3 = (* 3)
+
+    x4 :: Int -> Int
+    x4 = (* 4)
+
+    x = 12
+    
+    {-# IGNORE missing-signatures #-}    
+    y = 13
+
+2. `Suppress particular kinds of warnings for parts of a source file <https://gitlab.haskell.org/ghc/ghc/issues/602>`_. In this example we don't get ``-Wunused-do-bind`` warning for ``f`` but get it for ``g``.
+   ::
+    {-# OPTIONS_GHC -Wunused-do-bind #-}
+
+    f :: IO ()
+    f = {-# IGNORE unused-do-bind #-} do
+      getLine
+      return ()
+
+    g :: IO ()
+    g = do
+      getLine
+      return ()
+      
+3. `Suppress the warning in case of incomplete patterns <https://stackoverflow.com/questions/12717909/stop-ghc-from-warning-me-about-one-particular-missing-pattern/>`_. Pragma ``IGNORE`` fixes it:
+   ::
+    {-# OPTIONS_GHC -Wincomplete-patterns #-}
+
+    {-# INGNORE incomplete-patterns #-}
+    f :: (Show a) => Maybe a -> String
+    f (Just a) = show a
+      
+4. `Suppress orphan instance warning per instance <https://gitlab.haskell.org/ghc/ghc/issues/10150>`_. We disable ``-Worphans`` warning for ``instance ApplyFunc Box`` but warning for ``instance ApplyFunc Bottle`` works.
    ::
     module Foo (
       ApplyFunc(..)
@@ -77,46 +117,6 @@ Code examples
       func f (Milk a) = Milk $ f a
 
 We need to define an orphan instance for some type in an external library (``Bar``). It serves a nice documentation-like purpose to keep those instances local to avoid allowing any orphan in an entire module. Later we can search for the local instance declarations and revisit the decision to use them.
-
-2. `Suppress particular kinds of warnings for parts of a source file <https://gitlab.haskell.org/ghc/ghc/issues/602>`_. In this example we don't get ``-Wunused-do-bind`` warning for ``f`` but get it for ``g``.
-   ::
-    {-# OPTIONS_GHC -Wunused-do-bind #-}
-
-    f :: IO ()
-    f = {-# IGNORE unused-do-bind #-} do
-      getLine
-      return ()
-
-    g :: IO ()
-    g = do
-      getLine
-      return ()
-      
-3. `Suppress the warning in case of incomplete patterns <https://stackoverflow.com/questions/12717909/stop-ghc-from-warning-me-about-one-particular-missing-pattern/>`_. Pragma ``IGNORE`` fixes it:
-   ::
-    {-# OPTIONS_GHC -Wincomplete-patterns #-}
-
-    {-# INGNORE incomplete-patterns #-}
-    f :: (Show a) => Maybe a -> String
-    f (Just a) = show a
-      
-4. In this example you get warning ``-Wmissing-signatures`` for ``x`` but not for ``y``.
-   ::
-    {-# OPTIONS_GHC -Wmissing-signatures #-}
-
-    x2 :: Int -> Int
-    x2 = (* 2)
-
-    x3 :: Int -> Int
-    x3 = (* 3)
-
-    x4 :: Int -> Int
-    x4 = (* 4)
-
-    x = 12
-    
-    {-# IGNORE missing-signatures #-}    
-    y = 13
 
 Another motivation
 ~~~~~~~~~~~~~~~~~~

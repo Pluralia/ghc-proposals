@@ -147,7 +147,7 @@ None.
 Alternatives
 ------------
 
-We proposed to create one pragma ``OPTIONS_LOCAL`` which works like ``OPTIONS_GHC`` and provides a local control warnings and language extensions. This idea was reject becase:
+We proposed to create one pragma ``OPTIONS_LOCAL`` which works like ``OPTIONS_GHC`` and provides a local control warnings and language extensions. This idea was reject because:
 
 - every local language extension require individual way to implementation and can sense which is different from the global sence
 - using one name ``OPTIONS_LOCAL`` for warning is not so comfortable

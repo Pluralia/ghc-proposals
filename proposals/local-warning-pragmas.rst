@@ -42,7 +42,11 @@ Warnings and errors by compiler help to write nice code. Using ``WARN``, ``IGNOR
 Code examples
 ~~~~~~~~~~~~~
       
-1. `Suppress the warning in case of incomplete patterns <https://stackoverflow.com/questions/12717909/stop-ghc-from-warning-me-about-one-particular-missing-pattern/>`_. Pragma ``IGNORE`` fixes it:
+1. `Suppress the warning in case of incomplete patterns <https://stackoverflow.com/questions/12717909/stop-ghc-from-warning-me-about-one-particular-missing-pattern/>`_. 
+
+We might choose one place where we reluctantly decide that we don't want to match all patterns (due to other people's code, or maybe your own poor choice in the past but not able/willing to fix right now), but we certainly want to check for complete patterns everywhere else in the module. For example, there are deprecated cases in a sum type, where we didn't want to pattern match on them due to being deprecated, which also would generate a deprecated warning.
+
+Pragma ``IGNORE`` fixes it:
    ::
     {-# OPTIONS_GHC -Wincomplete-patterns #-}
 
@@ -50,27 +54,11 @@ Code examples
     f :: (Show a) => Maybe a -> String
     f (Just a) = show a
     
-We might choose one place where we reluctantly decide that we don't want to match all patterns (due to other people's code, or maybe your own poor choice in the past but not able/willing to fix right now), but we certainly want to check for complete patterns everywhere else in the module. For example, there are deprecated cases in a sum type, where we didn't want to pattern match on them due to being deprecated, which also would generate a deprecated warning.
+2. `Suppress orphan instance warning per instance <https://gitlab.haskell.org/ghc/ghc/issues/10150>`_. 
 
-2. In this example you get warning ``-Wmissing-signatures`` for ``x`` but not for ``y``.
-   ::
-    {-# OPTIONS_GHC -Wmissing-signatures #-}
+We need to define an orphan instance for some type in an external library (``Bar``). It serves a nice documentation-like purpose to keep those instances local to avoid allowing any orphan in an entire module. Later we can search for the local instance declarations and revisit the decision to use them.
 
-    x2 :: Int -> Int
-    x2 = (* 2)
-
-    x3 :: Int -> Int
-    x3 = (* 3)
-
-    x4 :: Int -> Int
-    x4 = (* 4)
-
-    x = 12
-
-    {-# IGNORE missing-signatures #-}    
-    y = 13
- 
-3. `Suppress orphan instance warning per instance <https://gitlab.haskell.org/ghc/ghc/issues/10150>`_. We disable ``-Worphans`` warning for ``instance ApplyFunc Box`` but warning for ``instance ApplyFunc Bottle`` works.
+We disable ``-Worphans`` warning for ``instance ApplyFunc Box`` but warning for ``instance ApplyFunc Bottle`` works.
    ::
     module Foo (
       ApplyFunc(..)
@@ -106,7 +94,27 @@ We might choose one place where we reluctantly decide that we don't want to matc
       func f Water    = Water
       func f (Milk a) = Milk $ f a
 
-We need to define an orphan instance for some type in an external library (``Bar``). It serves a nice documentation-like purpose to keep those instances local to avoid allowing any orphan in an entire module. Later we can search for the local instance declarations and revisit the decision to use them.
+3. **Local suppress warnings ``-Wmissing-signature`` and ``-Wunused-top-binds``**.
+
+Suppose you want to use temporary value or function for debug and you don't want define signature for it (). At the same time you want 
+
+In this example you get warning ``-Wmissing-signatures`` for ``x`` but not for ``y``.
+   ::
+    {-# OPTIONS_GHC -Wmissing-signatures #-}
+
+    x2 :: Int -> Int
+    x2 = (* 2)
+
+    x3 :: Int -> Int
+    x3 = (* 3)
+
+    x4 :: Int -> Int
+    x4 = (* 4)
+
+    x = 12
+
+    {-# IGNORE missing-signatures #-}    
+    y = 13
 
 Another motivation
 ~~~~~~~~~~~~~~~~~~

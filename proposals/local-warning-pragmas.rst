@@ -121,6 +121,8 @@ We need to define an orphan instance for some type in an external library (``Bar
 Another motivation
 ~~~~~~~~~~~~~~~~~~
 
+This block of motivation have been proposed by @scott-fleischman. Also examples ``-Wname-shadowing`` and ``-Worphans`` were updated pursuant his remarks.
+
 5. **Other people's code**. With a large codebase that uses lots of libraries and limited developer resources we need to respond to changes in libraries as we update to more recent versions. We may not agree with decisions of various libraries, but we do have to respond to them, and we may not be able to make the fully correct response immediately.
 
 6. **Allowing local exceptions to warnings**. It allows us to turn on warnings globally but allow local exceptions that we can document where they came from and why we are not able or willing to change them in the short term. This could be because it's not technically possible or because we are not willing to invest the time and effort to make the changes now. (We can file a ticket to improve it later.)

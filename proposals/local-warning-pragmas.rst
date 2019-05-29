@@ -1,5 +1,5 @@
-Options Local Pragma
-====================
+Local Warning Pragmas
+=====================
 
 .. proposal-number:: 
 .. ticket-url::
@@ -106,7 +106,7 @@ Consider some examples.
     x = 12
     
     {-# IGNORE missing-signatures #-}    
-    x' = 13
+    y = 13
 
 Proposed Change Specification
 -----------------------------
@@ -149,8 +149,8 @@ Alternatives
 
 We proposed to create one pragma ``OPTIONS_LOCAL`` which works like ``OPTIONS_GHC`` and provides a local control warnings and language extensions. This idea was reject becase:
 
- - every local language extension require individual way to implementation and can sense which is different from the global sence
- - using one name ``OPTIONS_LOCAL`` for warning is not so comfortable
+- every local language extension require individual way to implementation and can sense which is different from the global sence
+- using one name ``OPTIONS_LOCAL`` for warning is not so comfortable
 
 Unresolved Questions
 --------------------
@@ -168,9 +168,10 @@ Local language extensions
 
 There are three ways to local work with language extensions:
 
-1. create some general pragma ``LANG``
-2. create individual local pragmas for every extension when it makes sense
-3. forget this idea
+1. Create a new pragma ``LANGUAGE_LOCAL``
+2. Tweak the LANGUAGE pragma to be acceptable in other places, not only at the top.
+2. Create individual local pragmas for every extension when it makes sense
+3. Forget this idea
 
 Implementation Plan
 -------------------
